@@ -1,4 +1,5 @@
-#include <stdio.h> 
+#include <stdio.h>
+#include <stdilb.h> 
 #define IN 1
 #define OUT 0
 int findchar(char*src,char ch)
@@ -14,20 +15,29 @@ int findchar(char*src,char ch)
 main()
 {
     int c, nl, nw, nc, na, state;
+    FILE *fp;
+    char filename[];
+    printf("è¯·è¾“å…¥æ–‡ä»¶å:");
+    scanf("%s",filename);
+    if((fp=fopen(filename,"r"))==NULL)
+    {
+        printf("æ²¡æœ‰æ‰¾åˆ°æ–‡ä»¶ï¼\n");
+        exit(0); 
+     }
     state = OUT;
     nl = nw = nc = na = 0;
-    /* Ñ­»·½øĞĞÍ³¼Æ */
-    while ((c = getchar()) != EOF) 
+    /* å¾ªç¯è¿›è¡Œç»Ÿè®¡ */
+    while (!feof(fp)) 
     {
-        /* Í³¼Æ×Ö·û */
+        /* ç»Ÿè®¡å­—ç¬¦ */
         ++nc;
-        /* Í³¼Æ×¢ÊÍ */
+        /* ç»Ÿè®¡æ³¨é‡Š */
         if (c == '//'||c == '/*')
         ++na;
-        /* Í³¼ÆĞĞÊı */
+        /* ç»Ÿè®¡è¡Œæ•° */
         if (c == 'n')
         ++nl;
-        /* Í³¼Æµ¥´Ê */
+        /* ç»Ÿè®¡å•è¯ */
         if (c == ' ' || c == '\n' || c == '\t')
         state = OUT;
         else if (state == OUT)
@@ -36,17 +46,19 @@ main()
             ++nw;
          }
      }
-     /* Êä³ö½á¹û */
-     printf("´úÂëÎª%dĞĞ", nl);
-     printf("´úÂëÓĞ%d¸ö×Ö·û", nc);
-     printf("´úÂë¸ö%dµ¥´Ê", nw);
-     printf("´úÂëÓĞ%dÌõ×¢ÊÍ", na);
+     
+     /* ç»Ÿè®¡æŸä¸ªå­—ç¬¦æ•° */
+     char fp,ch,count=0;
+     printf("è¯·è¾“å…¥æŸ¥è¯¢çš„å­—ç¬¦:\n");
+     fgetc(fp);
+     ch=fgetc();
+     count=findchar(fp,ch);
+     /* è¾“å‡ºç»“æœ */
+     printf("ä»£ç ä¸º%dè¡Œ", nl);
+     printf("ä»£ç æœ‰%dä¸ªå­—ç¬¦", nc);
+     printf("ä»£ç ä¸ª%då•è¯", nw);
+     printf("ä»£ç æœ‰%dæ¡æ³¨é‡Š", na);
+     printf("å­—ç¬¦'%c'å‡ºç°%dæ¬¡ã€‚"ch,count);
 
-     /* Í³¼ÆÄ³¸ö×Ö·ûÊı */
-     char str[],ch,count=0;
-     printf("ÇëÊäÈë²éÑ¯µÄ×Ö·û:\n");
-     gets(str);
-     ch=getchar();
-     count=findchar(str,ch);
-     printf("×Ö·û'%c'³öÏÖ%d´Î¡£"ch,count);
+     
 }
